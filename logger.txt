@@ -1,0 +1,4 @@
+PS C:\Users\forbu\blockchain-vault> npx hardhat run scripts/deploy.js --network zircuit
+Deploying SecureVault contract...
+SecureVault deployed to: 0xFA8d8e24cC6CFbA51f76f6670B1938f970Bc3260
+Deployment completed successfully

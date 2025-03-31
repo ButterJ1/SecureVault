@@ -1,70 +1,13 @@
-# Getting Started with Create React App
+# Blockchain Vault
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Blockchain Vault is a decentralized application that enables secure storage of encrypted messages and passwords on the Ethereum blockchain. The application uses end-to-end encryption where only the intended recipient or owner can access the information using their wallet credentials and private keys.
 
-## Available Scripts
+## Project Description
 
-In the project directory, you can run:
+This project creates a trustless system for storing sensitive information on the blockchain. When sending messages, users connect their wallet (e.g., MetaMask) and specify a recipient address. Messages are encrypted client-side before being stored on the blockchain, ensuring that only the intended recipient can decrypt and read them. Users can save contacts with friendly names for easier address management.
 
-### `npm start`
+For password storage, the application implements a multi-factor security system using wallet authentication, a core password, and private keys. A unique security feature includes an ETH deposit requirement after failed decryption attempts to prevent brute force attacks. After three failed attempts, the account is locked for one hour, and the penalty amount doubles. The contract owner cannot access stored passwords, maintaining complete privacy.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Current Status
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is currently under development. The front-end interface has been created and the smart contract has been developed, but contract deployment and integration testing are still pending. Security testing and auditing will be required before production use.
