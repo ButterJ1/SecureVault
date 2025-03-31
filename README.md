@@ -14,6 +14,29 @@ SecureVault is a blockchain-based password manager that leverages smart contract
 - **Secured Balance**: Funds are protected when a vault is locked
 - **Customizable Security**: Set your own security cost for each password
 
+## ⚠️ Known Issues and Limitations
+
+When using the demo version, you may encounter the following errors in the console:
+
+```
+ERROR
+subscriber not running
+    at PollingBlockSubscriber.stop (http://localhost:3000/static/js/bundle.js:15358:13)
+    at BrowserProvider.off (http://localhost:3000/static/js/bundle.js:11292:24)
+```
+
+**Important notes for demo users:**
+
+1. **These errors are related to ethers.js v6 and MetaMask integration**. They occur when the application tries to clean up event listeners that may not be fully initialized.
+
+2. **The core functionality still works despite these errors**. You can still encrypt and store passwords successfully.
+
+3. **Browser console may show errors**, but these don't prevent the application from functioning. The password encryption and retrieval processes remain intact.
+
+4. **For optimal experience**, refresh the page after connecting your wallet before performing any operations.
+
+5. **If the application freezes**, disconnect and reconnect your wallet, then try your operation again.
+
 ## How It Works
 
 ### Storing Passwords
@@ -24,7 +47,7 @@ SecureVault is a blockchain-based password manager that leverages smart contract
    - Account (e.g., "user@gmail.com")
    - Password (e.g., "MySecureP@ssw0rd")
    - Core Password (your master encryption key)
-   - Cost (minimum 0.02 ETH) - the security deposit required
+   - Cost (minimum 0.0002 ETH) - the security deposit required
    - Has verification code (check if the account uses 2FA)
 3. Click "Encrypt & Store Password"
 4. Save the generated nonce (you'll need this to retrieve your password later)
@@ -35,7 +58,7 @@ Name: Gmail
 Account: user@gmail.com
 Password: MySecureP@ssw0rd
 Core Password: MasterKey123
-Cost: 0.05 ETH
+Cost: 0.0005 ETH
 Has verification code: ✓ (checked if Gmail uses 2FA)
 ```
 
@@ -60,14 +83,34 @@ Core Password: MasterKey123
 
 ### Security Mechanism Example
 
-Let's say you stored a Gmail password with a cost of 0.1 ETH (penalty fee 0.05 ETH):
+Let's say you stored a Gmail password with a cost of 0.0004 ETH (penalty fee 0.0002 ETH):
 
 1. **Correct attempt**: You enter the right nonce and core password → Password revealed, no fee charged
-2. **First failed attempt**: 0.05 ETH penalty, remaining 0.05 ETH returned
-3. **Second failed attempt**: Another 0.05 ETH penalty
+2. **First failed attempt**: 0.0002 ETH penalty, remaining 0.0002 ETH returned
+3. **Second failed attempt**: Another 0.0002 ETH penalty
 4. **Third failed attempt**: Vault locks for 3 days
 
-After 3 days, the vault unlocks, but penalties double for the next set of attempts (0.1 ETH per attempt).
+After 3 days, the vault unlocks, but penalties double for the next set of attempts (0.0004 ETH per attempt).
+
+## Demo Cautions and Tips
+
+1. **Use small amounts for testing**: When using the demo, set the minimum cost (0.0002 ETH) to avoid unnecessary expenses if errors occur.
+
+2. **Save your nonce immediately**: The nonce is crucial for retrieving your password. Copy and store it in a safe place as soon as it's generated.
+
+3. **MetaMask connection issues**: If MetaMask doesn't connect properly:
+   - Refresh the page
+   - Ensure MetaMask is unlocked
+   - Try disconnecting and reconnecting your wallet
+
+4. **Local storage dependency**: The app uses browser local storage to temporarily store encrypted data. Clearing your browser cache will make password retrieval impossible.
+
+5. **Network selection**: Ensure MetaMask is connected to the Zircuit Network before interacting with the application.
+
+6. **Error handling**: If you receive a transaction error, check the MetaMask details before confirming:
+   - Gas price
+   - Network congestion
+   - Contract interactions
 
 ## Smart Contract Architecture
 
@@ -110,7 +153,7 @@ struct User {
 - **Frontend**: React.js
 - **Web3 Integration**: ethers.js v6
 - **Wallet Connection**: MetaMask
-- **Encryption**: MetaMask's eth-sig-util
+- **Encryption**: MetaMask's built-in encryption
 
 ## Security Considerations
 
@@ -118,6 +161,7 @@ struct User {
 2. **Remember your core password**: There is no recovery mechanism
 3. **Set appropriate costs**: Higher costs mean higher security but also higher penalties
 4. **Secured Balance**: If your vault locks, your remaining balance is secured until unlocking
+5. **Browser storage**: Encrypted data is stored in your browser's local storage, so don't clear cache if you have active vaults
 
 ## Installation & Setup
 
@@ -128,10 +172,22 @@ struct User {
 5. Update the contract address in the frontend
 6. Start the application with `npm start`
 
+## Troubleshooting Common Issues
+
+### "Subscriber not running" Errors
+- These are related to ethers.js event handling and can be safely ignored for demo purposes
+- For production, consider implementing a more robust cleanup mechanism
+
+### MetaMask Transaction Errors
+- Ensure you have enough ETH for gas fees plus the password cost
+- Check that you're connected to the correct network (Zircuit Network)
+- Try increasing gas limit if transactions are failing
+
+### Password Retrieval Issues
+- Verify you're using the exact nonce that was provided
+- Core password must match exactly what was used for storage
+- Check that you haven't cleared your browser's local storage
+
 ## Contribution
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
