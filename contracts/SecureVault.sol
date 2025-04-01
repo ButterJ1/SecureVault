@@ -66,14 +66,11 @@ contract SecureVault {
         require(_cost >= MIN_PENALTY * 2, "Cost must be at least minimum penalty * 2");
         
         User storage user = users[msg.sender];
-        
-        // If this is a new password entry, add it to the array
         bool isNew = bytes(user.passwords[_name].name).length == 0;
         if (isNew) {
             user.passwordNames.push(_name);
         }
         
-        // Store the password entry
         user.passwords[_name] = PasswordEntry({
             name: _name,
             account: _account,
@@ -104,39 +101,29 @@ contract SecureVault {
             entry.isLocked = false;
             emit VaultUnlocked(msg.sender);
         }
-        
-        // Check if the attempt is correct
+
         if (_attempt == entry.encryptedData) {
-            // Successful retrieval
             entry.openCount++;
-            entry.attemptCount = 0; // Reset failed attempts
-            
-            // Refund the deposit
+            entry.attemptCount = 0;
+
             payable(msg.sender).transfer(msg.value);
             
             emit PasswordRetrievalAttempt(msg.sender, _name, true);
             return (true, "Password retrieved successfully");
         } else {
-            // Failed attempt
             entry.attemptCount++;
-            
-            // Calculate penalty based on attempt count
             uint256 penaltyAmount = calculatePenalty(entry.attemptCount);
-            
-            // Add to penalty total
+
             user.penaltyTotal += penaltyAmount;
             
-            // Transfer penalty to contract
             uint256 refundAmount = msg.value - penaltyAmount;
             
             emit PenaltyApplied(msg.sender, penaltyAmount);
             
-            // Check if vault should be locked (every 3 failed attempts)
             if (entry.attemptCount % 3 == 0) {
                 entry.isLocked = true;
                 entry.lastFailedTime = block.timestamp;
                 
-                // Move remaining balance to secured balance
                 user.securedBalance += refundAmount;
                 
                 emit VaultLocked(msg.sender, block.timestamp + LOCK_PERIOD);
@@ -144,7 +131,6 @@ contract SecureVault {
                 
                 return (false, "Vault locked for 3 days due to multiple failed attempts");
             } else {
-                // Refund the remaining amount
                 payable(msg.sender).transfer(refundAmount);
                 
                 return (false, "Incorrect password, penalty applied");
